@@ -8,7 +8,7 @@ class Node {
 
 class Tree {
     constructor(array) {
-        this.root = this.buildTreeRecursive(array);
+        this.root = this.buildTree(array);
     }
 
     sortArray(arr) {
@@ -24,59 +24,54 @@ class Tree {
     }
 
     //using a queue to do it (non-recursive method)
-    buildTree(array){
+
+    //TRY TO WRITE THIS ONE YOUR OWN
+    //sorted array
+    //find mid point, that's the root
+    //then, find find numbers to left of that, find midpoint of that, make it left
+
+    buildTree(array) {
         var sortedArray = this.sortArray(array);
-        console.log(sortedArray);
+        console.log(sortedArray)
 
         let n = sortedArray.length;
 
-        //if array is empty, return null
-        if (n===0) { 
-            return null; 
-        }
+        if (n === 0) return null;
 
-        //finds midpoint of array and makes it root
-        let mid = Math.floor((n-1) / 2);
-        //root node is middle value of the array
+        //find midpoint
+        let mid = Math.floor((n - 1) / 2);
+        //new root with mid of sorted array, put in data
         let root = new Node(sortedArray[mid]);
 
-        //queue with root node and two variables, start and end of array
-        let queue = [ {node: root, range: [ 0, n-1 ]} ]
-        console.log(queue);
-        //use to loop array until queue is empty
+        let queue = [ {node: root, range: [0, n - 1] } ]
         let frontIndex = 0;
 
         while(frontIndex < queue.length) {
-            let front = queue[frontIndex];
-            let current = front.node;
-            console.log(current)
-            let [s,e] = front.range;
-            let index = s + Math.floor((e - s) / 2);
+            //takes the first node we put in there
+            let front = queue[frontIndex]; 
+            //current node
+            let current = front.node; // the root node right now
+            let [s, e] = front.range; //setting start and end values to the CURRENT RANGE
+            let index = s + Math.floor((e - s) / 2); //midpoint of the ENTIRE range currently, when it is on right or left side, will find midpoint of that instead
 
-            //if left subtree exists
-            if (s < index) {
-                let midLeft
-                    = s + Math.floor((index - 1 - s) / 2);
-                let left = new Node(sortedArray[midLeft]);
-                current.left = left;
-                queue.push({node : left, range : [ s, index - 1 ]});
+            //if start is less than index(midpoint of array OR current side), find midpoint there
+            if(s < index) {
+                let midLeft = s + Math.floor((index - 1 - s) / 2); //midpoint of left side of midpoint
+                let leftNode = new Node(sortedArray[midLeft]);
+                current.left = leftNode;
+                queue.push({node: leftNode, range: [s, index - 1]});
             }
-    
-            // If right subtree exists
-            if (e > index) {
-                let midRight
-                    = index + 1
-                      + Math.floor((e - index - 1) / 2);
-                let right = new Node(sortedArray[midRight]);
-                current.right = right;
-                queue.push(
-                    {node : right, range : [ index + 1, e ]});
+
+            if(e > index) {
+                let midRight = index + 1 + Math.floor((e - index - 1) / 2);
+                let rightNode = new Node(sortedArray[midRight]);
+                current.right = rightNode;
+                queue.push({node: rightNode, range: [index + 1, e]})
             }
-    
-            frontIndex++;
+            console.log(queue)
+            frontIndex++
         }
         return root;
-
     }
     
     buildTreeRecursive(array) {
@@ -95,9 +90,14 @@ class Tree {
         return root; 
     } 
 
+    insert(value) {
+        
+    }
+
      
 }
 
+//add the root of tree in here to print out tree in console
 const prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
