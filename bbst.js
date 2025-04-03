@@ -91,6 +91,59 @@ class Tree {
     } 
 
     insert(value) {
+        const insertedNode = new Node(value);
+
+        //let parent = null;
+        let current = this.root;
+        console.log(current.data)
+
+        if(current === null) 
+            return new Node(value);
+
+        while(current != null) {
+
+            if(value < current.data){
+              if(current.left === null) {
+                current.left = insertedNode;
+                break;
+              } else {
+                current = current.left;
+              } 
+            } else if(value > current.data) {
+                if(current.right === null) {
+                    current.right = insertedNode;
+                    break;
+                } else {
+                    current = current.right;
+                }
+            }                           
+
+        }
+
+        //Recursion
+        // let node = this.root;
+
+        // if(value < node.data){
+        //     if(node.left === null){
+        //         node.left = new Node(value);
+        //         return;
+        //     }
+        //     else{
+        //         this.insert(value,node.left);
+        //     }
+        // }
+        // else{
+        //     if(node.right === null){
+        //         node.right = new Node(value);
+        //         return;
+        //     }
+        //     else{
+        //         this.insert(value,node.right);
+        //     }
+        // }
+    }
+
+    delete(value) {
         
     }
 
@@ -112,5 +165,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 let testTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+testTree.insert(12);
+testTree.insert(250);
 prettyPrint(testTree.root)
 
