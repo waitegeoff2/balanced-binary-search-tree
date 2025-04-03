@@ -144,9 +144,86 @@ class Tree {
     }
 
     delete(value) {
+        let current = this.root;
+        console.log(current.data)
+        let previous = null;
+
+        //this finds if the value is in the tree at all
+        //ends when current is null OR current equals value (it just skips over the function with the current value)
+        //prev points to parent of key to be deleted so we can keep track
+        while (current !== null && current.data !== value) {
+            previous = current;
+            if (value < current.data) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+
+        // if it came out of the function with current as null, return original function
+        if(current === null) {
+            return this.root;
+        }
+
+        //if it came out of function with a different node, delete that node and adjust
+
+        //check if the node to be deleted has AT LEAST one child
+        if (current.left === null || current.right === null) {
+            //new current the value we will be putting into tree equal to the side of the tree WITH the child
+            //new current is current.right if current.left is empty, otherwise left (taking the below node and PULLING IT UP)
+            let newCurrent = (current.left === null) ? current.right : current.left;
+    
+            // Check if the node to be deleted is the root.
+            if (previous === null) {
+                return newCurrent;
+            }
+    
+            // Check if the node to be deleted is "previous" L or R child, and then subbing in newCurrent INTO THE TREE there
+            if (current === previous.left) {
+                previous.left = newCurrent;
+            } else {
+                previous.right = newCurrent;
+            }
+        //ELSE if the node to be deleted has two children - UPDATE THIS
+        } else {
+            let p = null;
+            let temp = current.right;
+            while (temp.left !== null) {
+                p = temp;
+                temp = temp.left;
+            }
+    
+            if (p !== null) {
+                p.left = temp.right;
+            } else {
+                current.right = temp.right;
+            }
+    
+            current.key = temp.key;
+        }
         
+        return this.root;
     }
 
+    find(value) {
+        let current = this.root;
+        console.log(current.data)
+
+        while (current !== null && current.data !== value) {
+            if (value < current.data) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+        console.log(current)
+
+        if(current === null) {
+            console.log("not in tree")
+        } else {
+            return current;
+        }
+    }
      
 }
 
@@ -167,5 +244,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 let testTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 testTree.insert(12);
 testTree.insert(250);
+testTree.delete(587);
+testTree.find(6345);
 prettyPrint(testTree.root)
 
