@@ -23,13 +23,6 @@ class Tree {
         return orderedArrayFinal;
     }
 
-    //using a queue to do it (non-recursive method)
-
-    //TRY TO WRITE THIS ONE YOUR OWN
-    //sorted array
-    //find mid point, that's the root
-    //then, find find numbers to left of that, find midpoint of that, make it left
-
     buildTree(array) {
         var sortedArray = this.sortArray(array);
         console.log(sortedArray)
@@ -328,10 +321,8 @@ class Tree {
     }
 
     height(node) {
-        if(!node) return -1;
-        const leftHeight = this.height(node.left); 
-        const rightHeight = this.height(node.right); 
-        return 1 + Math.max(leftHeight, rightHeight); 
+        if (!node) return -1
+        return 1 + Math.max(this.height(node.left), this.height(node.right))
     }
 
     depth(node) {
@@ -357,6 +348,14 @@ class Tree {
         }
     }
 
+    rebalance() {
+        const newTree = [];
+        //ran this function through preOrder where, for each node, you added to the new array
+        this.preOrder((node)=> newTree.push(node.data));
+        //build new tree with your new array
+        this.root = this.buildTree(newTree);
+    }
+
      
 }
 
@@ -375,7 +374,8 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 let testTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-console.log(testTree.depth(3244))
+console.log(testTree.height(4))
+testTree.rebalance();
 
 prettyPrint(testTree.root)
 
