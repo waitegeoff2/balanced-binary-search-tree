@@ -262,9 +262,10 @@ class Tree {
         }
 
         function traverse(node) {
-            callback(node);
-
+            
             if(node == null) return;
+
+            callback(node);
 
             if(node.left) {
                 traverse(node.left);
@@ -280,12 +281,50 @@ class Tree {
 
     //left, then root, then right
     inOrder(callback) {
+        if(!callback || typeof callback !== "function"){
+            throw new Error('A callback function is required')
+        }
 
+        function traverse(node) {
+            
+            if(node == null) return;
+
+            if(node.left) {
+                traverse(node.left);
+            }
+
+            callback(node);
+
+            if(node.right) {
+                traverse(node.right);
+            }
+
+        }
+        traverse(this.root);
     }
 
     //left, then right, then root
     postOrder(callback) {
+        if(!callback || typeof callback !== "function"){
+            throw new Error('A callback function is required')
+        }
 
+        function traverse(node) {
+            
+            if(node == null) return;
+
+            if(node.left) {
+                traverse(node.left);
+            }
+
+            if(node.right) {
+                traverse(node.right);
+            }
+
+            callback(node);
+
+        }
+        traverse(this.root);
     }
 
      
@@ -310,6 +349,6 @@ testTree.insert(12);
 testTree.insert(250);
 testTree.delete(587);
 testTree.find(6345);
-console.log(testTree.preOrder(node => console.log(node.data + " this is data")));
+console.log(testTree.postOrder(node => console.log(node.data + " this is data")));
 prettyPrint(testTree.root)
 
