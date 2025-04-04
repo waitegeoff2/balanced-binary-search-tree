@@ -224,6 +224,33 @@ class Tree {
             return current;
         }
     }
+
+    //you pass a function into it and the function does something to each node
+    levelOrder(callback){
+        if(!callback || typeof callback !== "function"){
+            throw new Error('A callback function is required')
+        }
+
+        // if no root, return nothing
+        if(!this.root) return;
+
+        // An array should be created, add the root, add it's two children, take out the root, run the function, then add the children of the next element
+        const sequence = [this.root]
+
+        while (sequence.length > 0){
+            // Remove the frist node from the queue
+            const currentNode = sequence.shift()
+
+            // Process the current node using the callback
+            callback(currentNode);
+
+            // Add the children to the sequence (if they exist)
+            if(currentNode.left) sequence.push(currentNode.left);
+            if(currentNode.right) sequence.push(currentNode.right);
+
+        }
+
+    }
      
 }
 
@@ -246,5 +273,6 @@ testTree.insert(12);
 testTree.insert(250);
 testTree.delete(587);
 testTree.find(6345);
+console.log(testTree.levelOrder(node => console.log(node.data + " this is data")));
 prettyPrint(testTree.root)
 
