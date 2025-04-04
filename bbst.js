@@ -327,6 +327,36 @@ class Tree {
         traverse(this.root);
     }
 
+    height(node) {
+        if(!node) return -1;
+        const leftHeight = this.height(node.left); 
+        const rightHeight = this.height(node.right); 
+        return 1 + Math.max(leftHeight, rightHeight); 
+    }
+
+    depth(node) {
+        let current = this.root;
+        let count = 0;
+
+        if (node == this.root) return 0;
+
+        while (current !== null && current.data !== node) {
+            if (node < current.data) {
+                current = current.left;
+                count++;
+            } else {
+                current = current.right;
+                count++;
+            }
+        }
+
+        if(current === null) {
+            return -1;
+        } else {
+            return count;
+        }
+    }
+
      
 }
 
@@ -345,10 +375,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 let testTree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-testTree.insert(12);
-testTree.insert(250);
-testTree.delete(587);
-testTree.find(6345);
-console.log(testTree.postOrder(node => console.log(node.data + " this is data")));
+console.log(testTree.depth(3244))
+
 prettyPrint(testTree.root)
 
